@@ -78,7 +78,7 @@ export default function App() {
         playsInline 
         className="video-bg"
       >
-        <source src="/video fundo.mp4" type="video/mp4" />
+        <source src="/video-fundo.mp4" type="video/mp4" />
         Your browser does not support the video tag.
       </video>
 
