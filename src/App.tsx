@@ -79,10 +79,15 @@ export default function App() {
     <>
       {!isReady && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-brand-cream text-brand-ink">
-          <div className="text-center">
-            <p className="text-lg font-semibold">Carregando...</p>
-            <p className="text-sm text-brand-ink/70">Aguarde um instante enquanto carregamos o conteúdo.</p>
-            <p className="text-xs text-brand-ink/60 mt-1">{Math.min(100, Math.round((readyCount / requiredReady) * 100))}%</p>
+          <div className="text-center max-w-xs px-6 py-8 rounded-2xl shadow-xl bg-white/90 backdrop-blur-md">
+            <p className="text-2xl font-bold">Que bom que você chegou aqui!</p>
+            <p className="text-sm text-brand-ink/70 mt-2">Estamos preparando um espaço acolhedor para você.</p>
+            <p className="text-sm text-brand-ink/70">Em instantes já pode começar.</p>
+            <div className="mt-4 flex items-center justify-center gap-2">
+              <span className="h-2 w-2 rounded-full bg-brand-terracotta animate-pulse" />
+              <span className="h-2 w-2 rounded-full bg-brand-terracotta animate-pulse animation-delay-150" />
+              <span className="h-2 w-2 rounded-full bg-brand-terracotta animate-pulse animation-delay-300" />
+            </div>
           </div>
         </div>
       )}
