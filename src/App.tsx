@@ -5,7 +5,7 @@
 
 import { Instagram, MessageCircle } from 'lucide-react';
 import { motion } from 'motion/react';
-import { ReactNode } from 'react';
+import { ReactNode, useState, useMemo } from 'react';
 
 interface LinkButtonProps {
   label: string;
@@ -50,6 +50,15 @@ const LinkButton = ({ label, href, variant = 'secondary', icon }: LinkButtonProp
 };
 
 export default function App() {
+  const [readyCount, setReadyCount] = useState(0);
+  const requiredReady = useMemo(() => 2, []); // imagem + vídeo
+
+  const handleAssetLoaded = () => {
+    setReadyCount((prev) => Math.min(requiredReady, prev + 1));
+  };
+
+  const isReady = readyCount >= requiredReady;
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -68,21 +77,31 @@ export default function App() {
 
   return (
     <>
+      {!isReady && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-brand-cream text-brand-ink">
+          <div className="text-center">
+            <p className="text-lg font-semibold">Carregando...</p>
+            <p className="text-sm text-brand-ink/70">Aguarde um instante enquanto carregamos o conteúdo.</p>
+            <p className="text-xs text-brand-ink/60 mt-1">{Math.min(100, Math.round((readyCount / requiredReady) * 100))}%</p>
+          </div>
+        </div>
+      )}
+
       <div className="bg-grain" />
-      
       {/* Background Video */}
-      <video 
-        autoPlay 
-        muted 
-        loop 
-        playsInline 
+      <video
+        autoPlay
+        muted
+        loop
+        playsInline
         className="video-bg"
+        onLoadedData={handleAssetLoaded}
       >
         <source src="/video-fundo.mp4" type="video/mp4" />
         Your browser does not support the video tag.
       </video>
 
-      <div className="min-h-screen flex flex-col items-center relative z-10">
+      <div className={`min-h-screen flex flex-col items-center relative z-10 transition-opacity duration-500 ${isReady ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
         {/* Profile Section - Circular Style */}
         <motion.div 
           className="w-full flex flex-col items-center text-center pt-20 pb-12"
@@ -98,6 +117,7 @@ export default function App() {
                 alt="Jussi Castro"
                 className="w-full h-full object-cover object-top scale-125 -translate-y-4"
                 referrerPolicy="no-referrer"
+                onLoad={handleAssetLoaded}
               />
             </div>
             {/* Decorative element */}
